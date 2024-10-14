@@ -36,7 +36,7 @@ export default class CoreConfig<ConfigType = any> {
     const cfg = path.join(dir, "index.json");
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(cfg, JSON.stringify(data));
-    this.configData = this.initialData;
+    this.configData = data;
     return data;
   }
 
@@ -44,6 +44,7 @@ export default class CoreConfig<ConfigType = any> {
     const cfg = this.getCfgDir();
     if (!fs.existsSync(cfg)) return false;
     fs.rmSync(cfg, { force: true });
+    this.configData = this.initialData;
     return true;
   }
 
