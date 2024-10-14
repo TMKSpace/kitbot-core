@@ -56,7 +56,7 @@ export default abstract class Command {
 
     // Config and data.
     this.configFolder = this.id;
-    this.configName = "index.json";
+    this.configName = "index";
     this.dataFolder = this.id;
 
     // Logger
@@ -108,7 +108,7 @@ export default abstract class Command {
   }
 
   readConfig<config = any>(configName = this.configName): config | undefined {
-    const cfg = path.join(this.getCfgDir(), configName);
+    const cfg = path.join(this.getCfgDir(), configName + ".json");
     try {
       return JSON.parse(fs.readFileSync(cfg, { encoding: "utf-8" }));
     } catch {
@@ -121,21 +121,21 @@ export default abstract class Command {
     configName = this.configName
   ): config {
     const dir = this.getCfgDir();
-    const cfg = path.join(dir, configName);
+    const cfg = path.join(dir, configName, ".json");
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(cfg, JSON.stringify(data));
     return data;
   }
 
-  deleteConfig(configName = this.configName) {
-    const cfg = path.join(this.getCfgDir(), configName);
+  deleteConfig() {
+    const cfg = path.join(this.getCfgDir());
     if (!fs.existsSync(cfg)) return false;
     fs.rmSync(cfg, { force: true });
     return true;
   }
 
   private getCfgDir = () =>
-    path.join(process.cwd(), "configs", this.configFolder);
+    path.join(process.cwd(), "configs/commands", this.configFolder);
 
   // Data
 
@@ -143,8 +143,8 @@ export default abstract class Command {
     this.dataFolder = name;
   }
 
-  readData<data = any>(dataFilename = "index.json"): data | undefined {
-    const file = path.join(this.getDataDir(), dataFilename);
+  readData<data = any>(dataFilename = "index"): data | undefined {
+    const file = path.join(this.getDataDir(), dataFilename + ".json");
     try {
       return JSON.parse(fs.readFileSync(file, { encoding: "utf-8" }));
     } catch {
@@ -152,8 +152,8 @@ export default abstract class Command {
     }
   }
 
-  writeData<data = any>(data: data, filepath = "index.json"): data {
-    const file = path.join(this.getDataDir(), filepath);
+  writeData<data = any>(data: data, filepath = "index"): data {
+    const file = path.join(this.getDataDir(), filepath + ".json");
     const dir = path.dirname(file);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(file, JSON.stringify(data));

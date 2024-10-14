@@ -1,8 +1,18 @@
 import { ColorResolvable, EmbedBuilder } from "discord.js";
+import ModuleConfig from "../Utils/CoreConfig";
+
+const Config = new ModuleConfig<{
+  footer: { text: string; evalAppend: string };
+}>("CommandEmbed", {
+  footer: {
+    text: "Bot footer (modify config in configs/core) ",
+    evalAppend: '"2024-"+new Date().getFullYear()'
+  }
+});
 
 const config = {
   get footer() {
-    return "Все права обмяуканы 2023-" + new Date().getFullYear();
+    return Config.config.footer.text + eval(Config.config.footer.evalAppend);
   }
 };
 
