@@ -29,21 +29,28 @@ export default (client: CustomClient) => {
     try {
       log.info(`Started refreshing ${len} application (/) commands.`.gray);
 
-      const globalData: any | { length: number } = await rest.put(
+      const data: {
+        global?: { length: number } | any;
+        dev?: { length: number } | any;
+      } = {};
+
+      data.global = await rest.put(
         discord.Routes.applicationCommands(clientId),
         { body: globalCommands }
       );
-      const devData: any | { length: number } = await rest
-        .put(discord.Routes.applicationGuildCommands(clientId, devGuildId), {
-          body: devCommands
-        })
-        .catch((e) =>
-          log.warn("Dev guild id is not set, commands are not loaded.", e)
-        );
+      if (devGuildId)
+        data.dev = await rest
+          .put(discord.Routes.applicationGuildCommands(clientId, devGuildId), {
+            body: devCommands
+          })
+          .catch((e) => {
+            log.warn("Dev guild id is invalid, commands are not loaded.", e);
+            return 0;
+          });
 
       log.info(
-        `Reloaded: ${globalData.length ?? 0} Global, ${
-          devData.length ?? 0
+        `Reloaded: ${data.global.length ?? 0} Global, ${
+          data.dev.length ?? 0
         } Dev commands.`.gray
       );
     } catch (error) {
