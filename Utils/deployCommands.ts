@@ -49,8 +49,8 @@ export default (client: CustomClient) => {
           });
 
       log.info(
-        `Reloaded: ${data.global.length ?? 0} Global, ${
-          data.dev.length ?? 0
+        `Reloaded: ${data.global?.length ?? 0} Global, ${
+          data.dev?.length ?? 0
         } Dev commands.`.gray
       );
     } catch (error) {
