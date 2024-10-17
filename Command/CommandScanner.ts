@@ -15,7 +15,7 @@ export default class CommandScanner {
     this.config = config;
   }
 
-  importCommands(extensionFilters = ["js"]) {
+  importCommands(extensionFilters = ["js", "ts"]) {
     const files = scanDirectory(this.config.settings.commandPath, {
       ignoreFilters: this.config.settings.ignoredCommandDirs,
       extensionFilters

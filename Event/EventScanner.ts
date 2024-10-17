@@ -15,7 +15,7 @@ export default class EventScanner {
     this.config = config;
   }
 
-  importEvents(extensionFilters = ["js"]) {
+  importEvents(extensionFilters = ["js", "ts"]) {
     const files = scanDirectory("events", {
       ignoreFilters: this.config.settings.ignoredCommandDirs,
       extensionFilters
