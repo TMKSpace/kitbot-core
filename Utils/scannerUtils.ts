@@ -10,7 +10,7 @@ export function scanDirectory(directory: string, options: dirScannerOptions) {
   const collected: string[] = [];
 
   const files = fs.readdirSync(directory, { recursive: true });
-  files.forEach((buffer) => {
+  files.forEach((buffer: any) => {
     const filepath = path.resolve(directory, buffer.toString());
     const stat = fs.lstatSync(filepath);
 
